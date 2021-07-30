@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*,
+html {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif !important;
+}
+
+.table {
+    border-spacing: 0 15px;
+}
+
+
+.table tr {
+    border-radius: 20px;
+    font-size: 1.2rem;
+}
+
+tr td:nth-child(n+6),
+tr th:nth-child(n+6) {
+    border-radius: 0 .625rem .625rem 0;
+}
+
+tr td:nth-child(1),
+tr th:nth-child(1) {
+    border-radius: .625rem 0 0 .625rem;
+}
+
+.subjects a {
+    position: relative;
+    padding: 0.5rem 0;
+}
+
+.subjects a::before {
+    content: "\f0c8";
+    font-family: "Font Awesome 5 Free";
+    margin-right: .6rem;
+    font-weight: 500;
+}
+
+.subjects a.active::before {
+    content: "\f14a";
+}

@@ -1,82 +1,84 @@
 import Head from 'next/head'
+import InputSection from './InputSection'
+import TableSection from './TableSection'
+import { useState } from 'react';
 
 export default function Home() {
+  const [input, setInput] = useState({
+    name: '',
+    dob: '',
+    mobile: '',
+    email: '',
+    subjects: []
+  });
+  const [students, setStudent] = useState([
+    {
+    name: 'John Doe',
+    dob: '1997-07-26',
+    mobile: '01846029691',
+    email: 'mdraghib17@gmail.com',
+    subjects: ['bangla','english']
+    }
+  ]);
+  const [error, setError] = useState('');
+  const handleChange = e => {
+    if (e.target.id === 'subjects') {
+      setInput({...input,subjects:[...input.subjects,e.target.value]})
+    } else {
+      setInput(
+        {...input,[e.target.id] : e.target.value}
+      )
+    }
+  }
+  const selectSubject = (e, sub) => {
+    e.preventDefault()
+    let exist
+    if (input.subjects.includes(sub)) {
+      exist = true
+      const result = input.subjects.filter(subjects=> subjects !== sub)
+      setInput({...input,subjects:result})
+    }
+    if (!exist) {
+      setInput({...input,subjects:[...input.subjects,sub]})
+    }
+  }
+  const insertStudent = () => {
+    setError('')
+    // e.preventDefault()
+    if (input.name === '' || input.dob === '' || input.mobile === '' || input.email === '' || !(input.subjects.length > 0)) {
+      setError('Fill all the inputs')
+    } else {
+      setStudent([...students, input])
+      setInput(
+        {
+          name: '',
+          dob: '',
+          mobile: '',
+          email: '',
+          subjects: []
+        }
+      )
+    }
+  }
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2">
+    <div className="py-3  ">
       <Head>
-        <title>Create Next App</title>
+        <title>Gain Tech Task</title>
         <link rel="icon" href="/favicon.ico" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossOrigin="anonymous" />
+        <script defer src="https://use.fontawesome.com/releases/v5.15.3/js/all.js" integrity="sha384-haqrlim99xjfMxRP6EWtafs0sB1WKcMdynwZleuUSwJR0mDeRYbhtY+KPMr+JL6f" crossOrigin="anonymous"></script>
       </Head>
-
-      <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
-        <h1 className="text-6xl font-bold">
-          Welcome to{' '}
-          <a className="text-blue-600" href="https://nextjs.org">
-            Next.js!
-          </a>
-        </h1>
-
-        <p className="mt-3 text-2xl">
-          Get started by editing{' '}
-          <code className="p-3 font-mono text-lg bg-gray-100 rounded-md">
-            pages/index.js
-          </code>
-        </p>
-
-        <div className="flex flex-wrap items-center justify-around max-w-4xl mt-6 sm:w-full">
-          <a
-            href="https://nextjs.org/docs"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Documentation &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Find in-depth information about Next.js features and API.
-            </p>
-          </a>
-
-          <a
-            href="https://nextjs.org/learn"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Learn &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Learn about Next.js in an interactive course with quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Examples &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Discover and deploy boilerplate example Next.js projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Deploy &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
+      <main>
+        <h1 className='text-center font-semibold text-3xl border-b border-gray-600 py-1'>CRUD Operation</h1>
+        <InputSection
+          handleChange={handleChange}
+          input={input}
+          selectSubject={selectSubject}
+          insertStudent={insertStudent}
+          error={error}
+        />
+        <TableSection students={students}/>
       </main>
-
-      <footer className="flex items-center justify-center w-full h-24 border-t">
-        <a
-          className="flex items-center justify-center"
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className="h-4 ml-2" />
-        </a>
-      </footer>
     </div>
   )
 }
