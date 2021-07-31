@@ -2,17 +2,20 @@ import Head from 'next/head'
 import InputSection from './InputSection'
 import TableSection from './TableSection'
 import { useState } from 'react';
+import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
+import { addStudent, getStudents, getSubjects } from './gqlqueries';
 
-export default function Home() {
+export default function Home({students,subjects}) {
   const [input, setInput] = useState({
-    name: '',
-    dob: '',
-    mobile: '',
-    email: '',
-    subjects: []
+    name: "",
+    dob: "",
+    mobile: "",
+    email: "",
+    subject: ""
   });
-  const [students, setStudent] = useState([
+  const [allstudents, setStudent] = useState([
     {
+    id:1,
     name: 'John Doe',
     dob: '1997-07-26',
     mobile: '01846029691',
@@ -22,33 +25,25 @@ export default function Home() {
   ]);
   const [error, setError] = useState('');
   const handleChange = e => {
-    if (e.target.id === 'subjects') {
-      setInput({...input,subjects:[...input.subjects,e.target.value]})
-    } else {
       setInput(
         {...input,[e.target.id] : e.target.value}
       )
-    }
   }
-  const selectSubject = (e, sub) => {
-    e.preventDefault()
-    let exist
-    if (input.subjects.includes(sub)) {
-      exist = true
-      const result = input.subjects.filter(subjects=> subjects !== sub)
-      setInput({...input,subjects:result})
-    }
-    if (!exist) {
-      setInput({...input,subjects:[...input.subjects,sub]})
-    }
-  }
+
   const insertStudent = () => {
     setError('')
-    // e.preventDefault()
-    if (input.name === '' || input.dob === '' || input.mobile === '' || input.email === '' || !(input.subjects.length > 0)) {
+    if (input.name === '' || input.dob === '' || input.mobile === '' || input.email === '' || input.subject === '') {
       setError('Fill all the inputs')
     } else {
-      setStudent([...students, input])
+      // setStudent([...allstudents, input])
+      console.log(input);
+      const client = new ApolloClient({
+        uri: 'http://localhost:4000/graphql',
+        cache: new InMemoryCache()
+      });
+      client.mutate({
+        mutation:addStudent(input.name,input.email,input.dob,input.phone,input.subject)
+      })
       setInput(
         {
           name: '',
@@ -60,6 +55,8 @@ export default function Home() {
       )
     }
   }
+  // console.log(students,subjects)
+  // console.log(input,'ii')
   return (
     <div className="py-3  ">
       <Head>
@@ -73,7 +70,7 @@ export default function Home() {
         <InputSection
           handleChange={handleChange}
           input={input}
-          selectSubject={selectSubject}
+          // selectSubject={selectSubject}
           insertStudent={insertStudent}
           error={error}
         />
@@ -81,4 +78,24 @@ export default function Home() {
       </main>
     </div>
   )
+}
+
+export const getServerSideProps = async () => {
+  const client = new ApolloClient({
+    uri: 'http://localhost:4000/graphql',
+    cache: new InMemoryCache()
+  });
+  const { data } = await client.query({
+    query: getStudents,
+    // query:getSubjects,
+  });
+  // const { subjects } = await client.query({
+  //   query: getSubjects
+  // });
+  return {
+    props: {
+      students: data.students,
+      // subjects: data.subjects
+    }
+  }
 }

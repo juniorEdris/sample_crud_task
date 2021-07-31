@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import Link from 'next/link'
 const TableSection = (props) => {
     return (
         <div className="flex py-3 justify-center ">
@@ -9,7 +10,7 @@ const TableSection = (props) => {
         <div className="col-span-12">
             <div className="overflow-auto lg:overflow-visible ">
             <table className="table text-gray-800 border-separate space-y-6 text-sm">
-                <thead className="bg-gray-200 text-gray-800">
+                <thead className="bg-gray-300 text-gray-800">
                 <tr>
                     <th className="p-3">Name</th>
                     <th className="p-3 ">Email</th>
@@ -20,31 +21,10 @@ const TableSection = (props) => {
                 </tr>
                 </thead>
                 <tbody>
-                <tr className="bg-gray-200">
-                    <td className="p-3">
-                        John Doe
-                    </td>
-                    <td className="p-3">
-                        johndoe@mail.com
-                    </td>
-                    <td className="p-3">
-                        000-222-111
-                    </td>
-                    <td className="p-3">
-                        26-07-1997
-                    </td>
-                    <td className="p-3 ">
-                        Bangla,English
-                    </td>
-                    <td className="p-3 text-center">
-                        <a href="#" className="text-sm text-gray-800 hover:text-gray-400 mr-2">
-                            <i className="fas fa-trash-alt"></i>
-                        </a>
-                    </td>
-                </tr>
+                
                 {
                 props.students?.map(student => (
-                        <tr className="bg-gray-200">
+                    <tr className="bg-gray-300" key={student.id}>
                     <td className="p-3">
                         {student.name}
                     </td>
@@ -52,13 +32,18 @@ const TableSection = (props) => {
                         {student.email}
                     </td>
                     <td className="p-3">
-                        {student.mobile}
+                        {student.phone}
                     </td>
                     <td className="p-3">
                         {student.dob}
                     </td>
                     <td className="p-3 ">
-                            {student.subjects.join(',').toUpperCase()}
+                            {student?.subjects ? <Link href="#">
+                                <a >
+                                    {student.subjects.name.toUpperCase()}
+                                </a>
+                            </Link> : 'none'}
+                                    {/* {student.subjects.join(',').toUpperCase()} */}
                     </td>
                     <td className="p-3 text-center">
                         <a href="#" className="text-sm text-gray-800 hover:text-gray-400 mr-2">
