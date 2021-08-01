@@ -3,10 +3,6 @@ import Link from 'next/link'
 const TableSection = (props) => {
     return (
         <div className="flex py-3 justify-center ">
-        <Head>
-        <link rel="stylesheet" href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css"></link>
-        <script src="https://cdn.linearicons.com/free/1.0.0/svgembedder.min.js"></script>
-        </Head>
         <div className="col-span-12">
             <div className="overflow-auto lg:overflow-visible ">
             <table className="table text-gray-800 border-separate space-y-6 text-sm">
@@ -38,7 +34,7 @@ const TableSection = (props) => {
                         {student.dob}
                     </td>
                     <td className="p-3 ">
-                            {student?.subjects ? <Link href="#">
+                            {student?.subjects ? <Link href={`/subject/${student.subjects.id}`}>
                                 <a >
                                     {student.subjects.name.toUpperCase()}
                                 </a>
@@ -46,7 +42,10 @@ const TableSection = (props) => {
                                     {/* {student.subjects.join(',').toUpperCase()} */}
                     </td>
                     <td className="p-3 text-center">
-                        <a href="#" className="text-sm text-gray-800 hover:text-gray-400 mr-2">
+                            <a href="#" onClick={e => {
+                                e.preventDefault()
+                                props.delete(student.id)
+                            }} className="text-sm text-gray-800 hover:text-gray-400 mr-2">
                             <i className="fas fa-trash-alt"></i>
                         </a>
                     </td>

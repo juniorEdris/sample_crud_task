@@ -12,11 +12,9 @@ const InputSection = (props) => {
                     {/* <a href="#" className={`${props.input.subjects.includes('bangla') && 'active'} hover:text-gray-600 w-full mr-2 text-base font-normal`} onClick={e=>props.selectSubject(e,'bangla')}>Bangla</a>
                     <a href="#" className={`${props.input.subjects.includes('english') && 'active'} hover:text-gray-600 w-full mr-2 text-base font-normal`} onClick={e=>props.selectSubject(e,'english')}>English</a>
                     <a href="#"className={`${props.input.subjects.includes('math') && 'active'} hover:text-gray-600 w-full text-base font-normal`}  onClick={e=>props.selectSubject(e,'math')}>Math</a> */}
-                        <select className="w-full h-10 border rounded" name="" id="subject" onChange={props.handleChange}>
-                            <option value="">Select subject</option>
-                            <option value="bangla">Bangla</option>
-                            <option value="english">English</option>
-                            <option value="math">math</option>
+                        <select className="w-full h-10 border rounded capitalize" name="" id="subject" onChange={props.handleChange} value={props.input.subject}>
+                            <option value="">Select one</option>
+                            {props.subjects?.map(subject =><option value={subject.id} key={subject.id}>{subject.name}</option>)}
                         </select>
                 </div>
             </div>
