@@ -9,9 +9,6 @@ const InputSection = (props) => {
                 <div className=""><input className='w-full h-10 px-3 border rounded' type="text" id='mobile' onChange={props.handleChange} value={props.input.mobile} placeholder='Phone number'/></div>
                 <div className=""><input className='w-full h-10 px-3 border rounded' type="date" id='dob' onChange={props.handleChange} value={props.input.dob}/></div>
                 <div className="subjects flex flex-col items-start px-2">
-                    {/* <a href="#" className={`${props.input.subjects.includes('bangla') && 'active'} hover:text-gray-600 w-full mr-2 text-base font-normal`} onClick={e=>props.selectSubject(e,'bangla')}>Bangla</a>
-                    <a href="#" className={`${props.input.subjects.includes('english') && 'active'} hover:text-gray-600 w-full mr-2 text-base font-normal`} onClick={e=>props.selectSubject(e,'english')}>English</a>
-                    <a href="#"className={`${props.input.subjects.includes('math') && 'active'} hover:text-gray-600 w-full text-base font-normal`}  onClick={e=>props.selectSubject(e,'math')}>Math</a> */}
                         <select className="w-full h-10 border rounded capitalize" name="" id="subject" onChange={props.handleChange} value={props.input.subject}>
                             <option value="">Select one</option>
                             {props.subjects?.map(subject =><option value={subject.id} key={subject.id}>{subject.name}</option>)}
@@ -23,6 +20,11 @@ const InputSection = (props) => {
                 {props.error &&
                     <div className="text-center py-3 bg-red-300 rounded mt-2">
                         <small className='text-red-800 font-bold'>{props.error}</small>
+                    </div>
+                }
+                {props.msg &&
+                    <div className="text-center py-3 bg-green-300 rounded mt-2">
+                        <small className='text-green-700 font-bold'>{props.msg}</small>
                     </div>
                 }
             </div>

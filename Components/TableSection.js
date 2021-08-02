@@ -1,4 +1,3 @@
-import Head from 'next/head'
 import Link from 'next/link'
 const TableSection = (props) => {
     return (
@@ -33,19 +32,18 @@ const TableSection = (props) => {
                     <td className="p-3">
                         {student.dob}
                     </td>
-                    <td className="p-3 ">
-                            {student?.subjects ? <Link href={`/subject/${student.subjects.id}`}>
+                    <td className="p-3 hover:text-red-500">
+                            {student?.subjects ? <Link className='' href={`/subject/${student.subjects.id}`}>
                                 <a >
                                     {student.subjects.name.toUpperCase()}
                                 </a>
                             </Link> : 'none'}
-                                    {/* {student.subjects.join(',').toUpperCase()} */}
                     </td>
                     <td className="p-3 text-center">
                             <a href="#" onClick={e => {
                                 e.preventDefault()
                                 props.delete(student.id)
-                            }} className="text-sm text-gray-800 hover:text-gray-400 mr-2">
+                            }} className="text-sm text-red-700 hover:text-red-500 mr-2">
                             <i className="fas fa-trash-alt"></i>
                         </a>
                     </td>

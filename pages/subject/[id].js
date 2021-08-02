@@ -1,38 +1,31 @@
-import { ApolloClient, InMemoryCache } from '@apollo/client';
-import { getStudentsBySub } from '../gqlqueries';
+import { ApolloClient, gql, InMemoryCache } from '@apollo/client';
+import { useRouter } from 'next/dist/client/router';
+import Head from 'next/head'
 
-const Subject = ({result}) => {
+const Subject = ({ result }) => {
+    const router = useRouter()
+    const pushBack =e => router.back()
     return (
-        <div className="flex py-3 justify-center ">
-        <div className="col-span-12">
-            <div className="overflow-auto lg:overflow-visible ">
-            <table className="table text-gray-800 border-separate space-y-6 text-sm">
-                <thead className="bg-gray-300 text-gray-800">
-                <tr>
-                    <th className="p-3">Subject</th>
-                    <th className="p-3 ">Students</th>
-                </tr>
-                </thead>
-                <tbody>
-                
-                {/* {
-                props.students?.map(student => ( */}
-                    <tr className="bg-gray-300" >
-                    <td className="p-3 capitalize">
-                        {result.name}
-                    </td>
-                    <td className="p-3 capitalize">
-                     {result.students?.map(student => (
-                         <span key={student.id}>{`${student.name},`}</span>
-                        ))}
-                    </td>
-                </tr>
-                    {/* ))
-                } */}
-                </tbody>
-            </table>
+        <div className=" py-3 w-10/12 m-auto">
+            <Head>
+                <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossOrigin="anonymous" />
+                <script defer src="https://use.fontawesome.com/releases/v5.15.3/js/all.js" integrity="sha384-haqrlim99xjfMxRP6EWtafs0sB1WKcMdynwZleuUSwJR0mDeRYbhtY+KPMr+JL6f" crossOrigin="anonymous"></script>
+            </Head>
+            <div className="py-3 ">
+                <button type='button' onClick={pushBack} className='text-gray-600 hover:text-gray-400 '>
+                    <i className="fa-2x fas fa-arrow-circle-left hover:cursor-pointer" ></i> Go Back
+                </button>
             </div>
+        <div className="w-full">
+            <h1 className='capitalize text-4xl text-red-700 border-b-2 border-red-700 pl-2 pb-2'> <span>subject :</span> {result.name}</h1>
         </div>
+            <div className="py-8 px-2">
+            <ul className=''>
+            {result?.students?.map(student => (
+                <li className='capitalize text-xl mb-1' key={student.id}>{`${student.name}`}</li>
+            ))} 
+            </ul>
+        </div> 
         </div>
      );
 }
@@ -48,7 +41,18 @@ export const getServerSideProps = async (context) => {
         cache: new InMemoryCache()
       });
        const {data} = await client.query({
-        query: getStudentsBySub,
+        query: gql`
+        query($id:ID){
+            subject(id:$id){
+                id
+                name
+                students {
+                    id
+                    name
+                }
+            }
+        }
+    `,
         variables: {
           id
         }
